@@ -1,0 +1,21 @@
+<div fxLayout="row" class="container-of-products">
+    <div fxFlex="70%" class="list">
+        <div fxLayout="row wrap" fxLayout.xs="column" flexLayoutWrap fxLayoutAlign="center"
+            fclass="list-of-products">
+
+            <div fxFlex="1 1 24%" fxLayout="column" class="card-product" *ngFor="let product of bags$ | async | selectBags: bagsService.searchingParams" (click)='selectBag(product)'>
+                    <h3 fxFlexAlign="center">{{product.category | titlecase}} {{product.name}}</h3> 
+                    <div class="img-container" >
+                        <img class="card-img" [src]="product.photo1.photoTI" alt="Photo of a Shiba Inu">
+                        <div class="overlay">
+                            <img class="overlay-img" [src]="product.photo2.photoTI" alt="Photo of a Shiba Inu">
+                        </div>
+                    </div>
+                    <h3 fxFlexAlign="center">Price: {{product.price | grn}}</h3>
+            </div>        
+        </div>
+    </div>
+    <div fxFlex="30%" class="search">
+        <app-search-form></app-search-form>
+    </div>
+</div>

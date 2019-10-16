@@ -1,0 +1,40 @@
+<div class="card-container">
+    <div class="image-container">
+        <ngx-image-zoom 
+            [thumbImage]='currentPhoto.photoTI' 
+            [fullImage]='currentPhoto.photoFI' 
+            [magnification]="1.2"
+            [enableScrollZoom]="true" 
+            [enableLens]="true" 
+            [lensWidth]="200">
+        </ngx-image-zoom>
+    </div>
+    <div class="small-images-container">
+        <img 
+            [class.selectedPic]="currentBag.photo1.photoTI === currentPhoto.photoTI" 
+            class="little-img"
+            src={{currentBag.photo1.photoTI}} 
+            alt="Photo of a bag" 
+            (click)='changePhoto(currentBag.photo1)'
+        >
+        <img 
+            [class.selectedPic]="currentBag.photo2.photoTI === currentPhoto.photoTI" 
+            class="little-img"
+            src={{currentBag.photo2.photoTI}} 
+            alt="Photo of a bag" 
+            (click)='changePhoto(currentBag.photo2)'
+        >
+    </div>
+    <div class="text-info-container">
+        <div class="text">
+            <h1>{{currentBag.category | titlecase}} {{currentBag.name}}</h1>
+            <h1>{{currentBag.price | grn}}</h1>
+            <h3>Vendor code: {{currentBag.vendor}}</h3>
+            <h3>Material: {{currentBag.material}}</h3>
+            <h3>Color: {{currentBag.color}}</h3>
+            <h3>Dimensions: {{currentBag.dimensions}}</h3>
+        </div>
+        <button mat-button color="warn" class="btnCart">PUT IN CART <i class="material-icons">shopping_cart</i></button>
+    </div>
+
+</div>

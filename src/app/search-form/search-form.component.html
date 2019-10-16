@@ -1,0 +1,25 @@
+<div class="search-container" fxLayout="column" fxLayoutAlign="center">
+<form [formGroup]='searchForm' (ngSubmit)='submit()'>
+    <div lass="custom-slider">
+        <h3 >Searching by price (grn):</h3>
+        <ng5-slider 
+            [(value)]="value" 
+            [(highValue)]="highValue" 
+            [options]="options">
+        </ng5-slider>
+    </div>
+    <div fxFlexc='60%' fxLayout="column">
+        <h3>Searching by brands:</h3>
+        <label formArrayName="listOfBrands" *ngFor='let item of searchForm.controls.listOfBrands.controls; let i=index'>
+            <mat-checkbox class="example-margin" [formControlName]="i">{{searchObject.brands[i].brand}}</mat-checkbox>
+        </label>
+
+        <button class="search-btn" mat-raised-button color="accent">Searching...</button>
+
+    </div>
+
+</form>
+
+<button mat-raised-button color="warn" (click)='resetSearchingParams()'>Reset filters</button>
+
+</div>
