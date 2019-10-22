@@ -17,6 +17,10 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { bagsReducer } from './redux/bags.reducer';
+import { PaginationPipe } from './shared/pipes/pagination.pipe';
+import { CartComponent } from './pages/cart/cart.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -24,11 +28,13 @@ import { bagsReducer } from './redux/bags.reducer';
     CardComponent,
     GrnPipe,
     SelectBagsPipe,
+    PaginationPipe,
     ListOfProductsComponent,
     SearchFormComponent,
     HeaderComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +50,8 @@ import { bagsReducer } from './redux/bags.reducer';
         strictStateImmutability: true,
         strictActionImmutability: true
       }
-    })
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   exports: [],

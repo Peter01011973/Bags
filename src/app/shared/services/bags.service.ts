@@ -3,26 +3,34 @@ import { bagsDB } from 'src/app/bagsDB';
 import { IBag } from '../interfaces/bag-interface';
 import { IBagSearchParams } from '../interfaces/bagSearch-interface';
 import { IBrand } from '../interfaces/brand-interface';
-import { Observable, of, Subscription } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, of, Subscription, Subject } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 import { LoadBags } from 'src/app/redux/bags.actions';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/redux/app.state';
+import { PageEvent } from '@angular/material/paginator';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BagsService implements OnDestroy {
+  public changeSearchingParams$$ = new Subject<IBagSearchParams>(); 
+  // public bagsLength$$ = new Subject<number>(); 
   public currentBag: IBag;
   public listOfBags: IBag[] = bagsDB;
   public currentListOfBags: IBag[] = this.listOfBags;
   public searchingParams: IBagSearchParams;
   public subscriptionGetBags: Subscription;
   
-  public constructor(private http: HttpClient, private _snackBar: MatSnackBar, private store: Store<AppState>) {
+  public constructor(
+    private http: HttpClient, 
+    private _snackBar: MatSnackBar, 
+    private store: Store<AppState>) 
+  {
+    // this.getBags();
     this.currentBag = this.listOfBags[0];
     this.searchingParams = {
       price: {
@@ -30,23 +38,41 @@ export class BagsService implements OnDestroy {
         max: this.getMaxPriceOfProduct(this.currentListOfBags)}, 
       brands: this.getBrandsList(this.currentListOfBags)
     };
+  }
 
+  // public getFavHotels(params: Partial<PageEvent>): void {
 
-   }
-  //  public getHotels(stars:number): void {
-  //   const param:string = (stars)?`?stars=${stars}`:``;
-  //   this.subscriptionGetFavHotels = this.http.get<Hotel[]>(`${environment.api}/hotels/${param}`)
+  //   const httpParams: HttpParams = new HttpParams({
+  //     fromObject: {
+  //       _page: String(params.pageIndex),
+  //       _limit: String(params.pageSize)
+  //     }
+  //   });
+  //   this.subGetFavHotels = this.http.get<Hotel[]>(`${environment.api}/favoriteHotels`)
+  //   .subscribe(hots => this.lengthFan$$.next(hots.length));
+
+  //   this.http.get<Hotel[]>(`${environment.api}/favoriteHotels/`,{params: httpParams})
   //   .pipe(
   //     catchError(() => {
   //       this._snackBar.open('Server is unvalible now');
   //       console.log('error');
   //       return of([]);
   //     })
-  //   ).subscribe(hotels => this.store.dispatch(LoadHotels(hotels)));
+  //   ).subscribe(FavHotels => {console.log('Fan length: ',FavHotels.length);
+  //     this.store.dispatch(LoadFavHotels(FavHotels));
+  //   });   
   // }
 
-  public getBags(): void {
-    this.subscriptionGetBags = this.http.get<IBag[]>(`${environment.api}/bagsDB`)
+  public getBags(params: Partial<PageEvent>): void {
+    const httpParams: HttpParams = new HttpParams({
+      fromObject: {
+        _page: String(params.pageIndex),
+        _limit: String(params.pageSize)
+      }
+    });
+
+        // this.subscriptionGetBags = this.http.get<IBag[]>(`${environment.api}/bagsDB`,{params: httpParams})
+        this.subscriptionGetBags = this.http.get<IBag[]>(`${environment.api}/bagsDB`)
     .pipe(
       catchError(() => {
         this._snackBar.open('Server is unvalible now');
@@ -54,14 +80,6 @@ export class BagsService implements OnDestroy {
         return of([]);
       }) 
     ).subscribe(bags => this.store.dispatch(LoadBags(bags)));    
-    // return this.http.get<IBag[]>('https://test-project-45b30.firebaseio.com/bagsDB.json')
-    // .pipe(
-    //   catchError(() => {
-    //     this._snackBar.open('Server is unvalible now');
-    //     console.log('error');
-    //     return of([]);
-    //   })
-    // );
   }
 
   public selectBag(bag: IBag): void {
@@ -96,12 +114,12 @@ export class BagsService implements OnDestroy {
     return list;
   }
 
-  public searchingInBags(searchingP: IBagSearchParams) {
-    this.currentListOfBags = this.listOfBags.filter(
-      item => ((item.price <= searchingP.price.max) 
-      && (item.price >= searchingP.price.min) 
-      && searchingP.brands.filter(cur => ((item.brand === cur.brand) && cur.isChoosed)).length > 0));
-  }
+  // public searchingInBags(searchingP: IBagSearchParams) {
+  //   this.currentListOfBags = this.listOfBags.filter(
+  //     item => ((item.price <= searchingP.price.max) 
+  //     && (item.price >= searchingP.price.min) 
+  //     && searchingP.brands.filter(cur => ((item.brand === cur.brand) && cur.isChoosed)).length > 0));
+  // }
 
   public ngOnDestroy() {
     this.subscriptionGetBags.unsubscribe();

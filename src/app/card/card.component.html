@@ -33,8 +33,9 @@
             <h3>Material: {{currentBag.material}}</h3>
             <h3>Color: {{currentBag.color}}</h3>
             <h3>Dimensions: {{currentBag.dimensions}}</h3>
+            <h3>Quantity in stock: {{currentBag.quantity}}</h3>
         </div>
-        <button mat-button color="warn" class="btnCart">PUT IN CART <i class="material-icons">shopping_cart</i></button>
+        <button mat-raised-button color="accent" class="btnCart" (click)='addToCart(currentBag)' [disabled]='currentBag.quantity === 0'>PUT IN CART <i class="material-icons">shopping_cart</i></button>
     </div>
 
 </div>

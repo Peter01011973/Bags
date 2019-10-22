@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { BagsService } from '../shared/services/bags.service';
 import { IBagSearchParams } from '../shared/interfaces/bagSearch-interface';
 import { Store } from '@ngrx/store';
-import { AppState } from '../redux/app.state';
+import { AppState, getBagsArray } from '../redux/app.state';
+import { IBag } from '../shared/interfaces/bag-interface';
 
 
 @Component({
@@ -35,8 +36,8 @@ export class SearchFormComponent implements OnInit {
         }}
       )
     };
-    console.log(this.searchObject);
- 
+    this.bagsService.changeSearchingParams$$.next(this.searchObject);
+
     // this.bagsService.searchingInBags(this.searchObject);
   }
 

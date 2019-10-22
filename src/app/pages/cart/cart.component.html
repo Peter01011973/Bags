@@ -1,0 +1,54 @@
+<div class="cart-list-container" *ngIf="cart$ | async as cart">
+    <table mat-table [dataSource]="cart" class="mat-elevation-z8">
+        <!-- Item Column -->
+        <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> Name of product </th>
+            <td mat-cell *matCellDef="let item"> {{item.category}} {{item.name}}</td>
+            <td mat-footer-cell *matFooterCellDef> Total </td>
+        </ng-container>
+        <!-- Item Column -->
+        <ng-container matColumnDef="icon">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> Photo of product </th>
+            <td mat-cell *matCellDef="let item"><img class="img-in-table" matListAvatar [src]='item.photo1.photoTI'>
+            </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <!-- Price Column -->
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> Price </th>
+            <td mat-cell *matCellDef="let item"> {{item.price | grn}} </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <!-- Quantity Column -->
+        <ng-container matColumnDef="count">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> Quantity </th>
+            <td mat-cell *matCellDef="let item"> {{item.count}} </td>
+            <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <!-- Cost Column -->
+        <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> Cost </th>
+            <td mat-cell *matCellDef="let item"> {{item.count * item.price | grn}} </td>
+            <td mat-footer-cell *matFooterCellDef>{{totalCost$ | async | grn}} </td>
+        </ng-container>
+        <!-- Increase Column -->
+        <ng-container matColumnDef="increase">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> Add </th>
+            <td mat-cell *matCellDef="let item"><button mat-mini-fab color="primary" [disabled]="item.quantity >= item.count" (click)="increase(item)">
+                    <i class="material-icons">add</i>
+                </button></td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+        <!-- Decrease Column -->
+        <ng-container matColumnDef="decrease">
+            <th mat-header-cell *matHeaderCellDef style="text-align:center"> Remove </th>
+            <td mat-cell *matCellDef="let item"><button mat-mini-fab color="accent" [disabled]="item.count == 0" (click)="delete(item)">
+                    <i class="material-icons">remove</i>
+                </button></td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>s
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+    </table>
+</div>
