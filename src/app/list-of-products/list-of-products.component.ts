@@ -19,7 +19,7 @@ export class ListOfProductsComponent implements OnInit {
   public searchingParams$: Observable<IBagSearchParams>;
   public pageParams: Partial<PageEvent> = {
     pageIndex: 1,
-    pageSize: 3
+    pageSize: 5
   }
 
  

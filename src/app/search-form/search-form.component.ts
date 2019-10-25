@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Options } from 'ng5-slider';
 import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { IBagSearchParams } from '../shared/interfaces/bagSearch-interface';
@@ -13,7 +13,7 @@ import { Observable, Subscription } from 'rxjs';
   templateUrl: './search-form.component.html',
   styleUrls: ['./search-form.component.css']
 })
-export class SearchFormComponent implements OnInit {
+export class SearchFormComponent implements OnInit, OnDestroy {
 
   public searchObject$: Observable<IBagSearchParams>;
   public searchObject: IBagSearchParams;
@@ -22,6 +22,7 @@ export class SearchFormComponent implements OnInit {
   public highValue: number;
   public options: Options;   
   public searchForm: FormGroup;
+  public sub: Subscription;
 
   constructor(private fb: FormBuilder, private store: Store<AppState>) {}
 
@@ -29,7 +30,7 @@ export class SearchFormComponent implements OnInit {
     this.init();
 
     this.searchObject$ = this.store.select<IBagSearchParams>(getGetSearchingParams);
-    this.searchObject$
+    this.sub = this.searchObject$
       .subscribe((params: IBagSearchParams) => {
         this.searchObject = params;
         this.value = params.price.min;
@@ -69,5 +70,9 @@ export class SearchFormComponent implements OnInit {
 
   public resetSearchingParams(): void {
     this.init();
+  }
+
+  public ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }
