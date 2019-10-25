@@ -146,6 +146,69 @@
                 "photoTI": "assets/images/7367ti.2.jpg",
                 "photoFI": "assets/images/7367.2.jpg"
             }
-        }
+        },
+        {
+            "id": 8,
+            "category": "Lady's bag",
+            "name": "Furla Metropolis Mini",
+            "vendor": "1033923",
+            "brand": "Furla",
+            "countryManufacture": "Italy",
+            "color": "grin",
+            "dimensions": "16*12*7",
+            "material": "Toni leather",
+            "price": 10480,
+            "quantity": 3,
+            "photo1": {
+                "photoTI": "assets/images/7375ti.1.jpg",
+                "photoFI": "assets/images/7375.1.jpg"
+            },
+            "photo2": {
+                "photoTI": "assets/images/7375ti.2.jpg",
+                "photoFI": "assets/images/7375.2.jpg"
+            }
+        },
+        {
+            "id": 9,
+            "category": "Lady's bag",
+            "name": "Piumelli LAYLA",
+            "vendor": "1033926",
+            "brand": "LAYLA",
+            "countryManufacture": "Italy",
+            "color": "black",
+            "dimensions": "15*19*5",
+            "material": "leather",
+            "price": 5380,
+            "quantity": 2,
+            "photo1": {
+                "photoTI": "assets/images/7376ti.1.jpg",
+                "photoFI": "assets/images/7376.1.jpg"
+            },
+            "photo2": {
+                "photoTI": "assets/images/7376ti.2.jpg",
+                "photoFI": "assets/images/7376.2.jpg"
+            }
+        },
+        {
+            "id": 10,
+            "category": "Lady's bag",
+            "name": "Ladi M S Crossbody",
+            "vendor": "1039082",
+            "brand": "Furla",
+            "countryManufacture": "Italy",
+            "color": "red",
+            "dimensions": "21*17*6",
+            "material": "Gilegia ",
+            "price": 5380,
+            "quantity": 2,
+            "photo1": {
+                "photoTI": "assets/images/7377ti.1.jpg",
+                "photoFI": "assets/images/7377.1.jpg"
+            },
+            "photo2": {
+                "photoTI": "assets/images/7377ti.2.jpg",
+                "photoFI": "assets/images/7377.2.jpg"
+            }
+        }                                
     ]
 }

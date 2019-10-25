@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { LoadBags, AddProductToCart, DeleteProductFromCart, ChangeCurrentProduct, ChangeSearchingParams } from './bags.actions';
+import { LoadBags, AddProductToCart, DeleteProductFromCart, ChangeCurrentProduct, ChangeSearchingParams, ResetSearchingParams } from './bags.actions';
 import { ICart } from '../shared/interfaces/cart-interface';
 import { IBag } from '../shared/interfaces/bag-interface';
 import { IBrand } from '../shared/interfaces/brand-interface';
@@ -30,8 +30,19 @@ export const bagsReducer = createReducer({bagsDB: [], cartDB: []},
         {...state, cartDB: state.cartDB.filter((bag: ICart) => bag !== action.payload) }
     }),
     on(ChangeCurrentProduct, (state, action) => ({...state, currentPoduct: action.payload})),
-    on(ChangeSearchingParams, (state, action) => ({...state, searchingParams: action.payload}))
+    on(ChangeSearchingParams, (state, action) => ({...state, searchingParams: action.payload})),
+    on(ResetSearchingParams, (state, action) => ({
+        ...state, 
+        searchingParams: {
+            price: {
+              min: state.bagsDB.reduce((accumulator: number, currentValue: IBag) => (accumulator < currentValue.price ? accumulator : currentValue.price), Infinity),
+              max: state.bagsDB.reduce((accumulator: number, currentValue: IBag) => (accumulator > currentValue.price ? accumulator : currentValue.price), -Infinity)
+            },
+            brands: getBrandsList(state.bagsDB)
+          }
+    })),
 );
+
 
 function getBrandsList(a: IBag[]): IBrand[] {
 

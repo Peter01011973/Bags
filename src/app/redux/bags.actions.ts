@@ -7,5 +7,4 @@ export const AddProductToCart = createAction('ADD_PRODUCT_TO_CART', (payload: IB
 export const DeleteProductFromCart = createAction('DELETE_PRODUCT_FROM_CART', (payload: IBag) => ({payload}));
 export const ChangeCurrentProduct = createAction('CHANGE_CURRENT_PRODUCT',(payload: IBag) => ({payload}));
 export const ChangeSearchingParams = createAction('CHANGE_SEARCHING_PARAMS',(payload: IBagSearchParams) => ({payload}));
-
-
+export const ResetSearchingParams = createAction('RESET_SEARCHING_PARAMS');

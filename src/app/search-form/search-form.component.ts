@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { IBagSearchParams } from '../shared/interfaces/bagSearch-interface';
 import { Store } from '@ngrx/store';
 import { AppState, getGetSearchingParams } from '../redux/app.state';
-import { ChangeSearchingParams } from '../redux/bags.actions';
+import { ChangeSearchingParams, ResetSearchingParams } from '../redux/bags.actions';
 import { Observable, Subscription } from 'rxjs';
 
 
@@ -26,12 +26,7 @@ export class SearchFormComponent implements OnInit {
   constructor(private fb: FormBuilder, private store: Store<AppState>) {}
 
   public ngOnInit(): void {
-    const sub: Subscription = this.store.select<IBagSearchParams>(getGetSearchingParams)
-      .subscribe((params: IBagSearchParams) => {
-        this.options = { floor: params.price.min, ceil: params.price.max };
-        this.initParams = params;
-      });
-    sub.unsubscribe();
+    this.init();
 
     this.searchObject$ = this.store.select<IBagSearchParams>(getGetSearchingParams);
     this.searchObject$
@@ -44,6 +39,16 @@ export class SearchFormComponent implements OnInit {
           listOfBrands: new FormArray(formSearch)
         });
       });
+  }
+
+  public init(): void {
+    this.store.dispatch(ResetSearchingParams());
+    const sub: Subscription = this.store.select<IBagSearchParams>(getGetSearchingParams)
+    .subscribe((params: IBagSearchParams) => {
+      this.options = { floor: params.price.min, ceil: params.price.max };
+      this.initParams = params;    
+    });
+    sub.unsubscribe();    
   }
 
   public submit(): void {
@@ -63,6 +68,6 @@ export class SearchFormComponent implements OnInit {
   }
 
   public resetSearchingParams(): void {
-    this.store.dispatch(ChangeSearchingParams(this.initParams));
+    this.init();
   }
 }
