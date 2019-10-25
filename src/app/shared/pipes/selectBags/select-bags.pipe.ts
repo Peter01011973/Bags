@@ -8,7 +8,7 @@ import { IBag } from '../../interfaces/bag-interface';
 export class SelectBagsPipe implements PipeTransform {
 
   transform(bagsArr: IBag[], searchParams: IBagSearchParams): IBag[] {
-    console.log('pipe works', searchParams.price.max, searchParams.price.min);
+    console.log('pipe works', searchParams.price.max, searchParams.price.min, searchParams.brands[0]);
 
     const arr = bagsArr.filter((item: IBag )=> (
       (item.price <= searchParams.price.max) && 

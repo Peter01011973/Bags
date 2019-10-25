@@ -14,8 +14,8 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-  public listOfBags: IBag[] = bagsDB;
-  public list: Observable<IBag>;
+  // public listOfBags: IBag[] = bagsDB;
+  // public list: Observable<IBag>;
 
   public constructor(private http: HttpClient) {}
 

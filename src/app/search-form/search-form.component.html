@@ -1,6 +1,6 @@
-<div class="search-container" fxLayout="column" fxLayoutAlign="center">
+<div class="search-container" fxLayout="column" fxLayoutAlign="center" *ngIf="searchObject$ | async as searchObject">
 <form [formGroup]='searchForm' (ngSubmit)='submit()'>
-    <div lass="custom-slider">
+    <div lass="custom-slider" >
         <h3 >Searching by price (grn):</h3>
         <ng5-slider 
             [(value)]="value" 

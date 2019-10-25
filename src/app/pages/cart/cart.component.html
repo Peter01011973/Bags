@@ -34,7 +34,7 @@
         <!-- Increase Column -->
         <ng-container matColumnDef="increase">
             <th mat-header-cell *matHeaderCellDef style="text-align:center"> Add </th>
-            <td mat-cell *matCellDef="let item"><button mat-mini-fab color="primary" [disabled]="item.quantity >= item.count" (click)="increase(item)">
+            <td mat-cell *matCellDef="let item"><button mat-mini-fab color="primary" [disabled]="item.quantity <= item.count" (click)="increase(item)">
                     <i class="material-icons">add</i>
                 </button></td>
             <td mat-footer-cell *matFooterCellDef></td>

@@ -1,12 +1,15 @@
 import { IBag } from '../shared/interfaces/bag-interface';
-import { createSelector } from '@ngrx/store';
+import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { ICart } from '../shared/interfaces/cart-interface';
+import { IBagSearchParams } from '../shared/interfaces/bagSearch-interface';
+import { IBrand } from '../shared/interfaces/brand-interface';
 
 export interface AppState {
     bags: {
         bagsDB: IBag[];
-        cartDB: ICart[]
-        // bagsArrayLengthAfterSearch: number;
+        cartDB: ICart[];
+        currentPoduct: IBag;
+        searchingParams: IBagSearchParams;
     }
 }
 
@@ -22,8 +25,13 @@ export const getCart = createSelector(
   (state) => state.cartDB
 );
 
-export const getBagsArrayLength = createSelector(
+export const getCurrentProduct = createSelector(
   getBagsState,
-  (state) => state.bagsDB.length
+  (state) => state.currentPoduct
+);
+
+export const getGetSearchingParams: MemoizedSelector<AppState, IBagSearchParams> = createSelector(
+  getBagsState,
+  (state) => state.searchingParams
 );
 

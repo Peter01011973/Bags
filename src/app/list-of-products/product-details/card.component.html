@@ -1,5 +1,5 @@
-<div class="card-container">
-    <div class="image-container">
+<div class="card-container" *ngIf="currentBag$ | async as currentBag">
+    <div class="image-container" *ngIf="currentPhoto$ | async as currentPhoto">
         <ngx-image-zoom 
             [thumbImage]='currentPhoto.photoTI' 
             [fullImage]='currentPhoto.photoFI' 
@@ -9,7 +9,7 @@
             [lensWidth]="200">
         </ngx-image-zoom>
     </div>
-    <div class="small-images-container">
+    <div class="small-images-container" *ngIf="currentPhoto$ | async as currentPhoto">
         <img 
             [class.selectedPic]="currentBag.photo1.photoTI === currentPhoto.photoTI" 
             class="little-img"
@@ -35,7 +35,6 @@
             <h3>Dimensions: {{currentBag.dimensions}}</h3>
             <h3>Quantity in stock: {{currentBag.quantity}}</h3>
         </div>
-        <button mat-raised-button color="accent" class="btnCart" (click)='addToCart(currentBag)' [disabled]='currentBag.quantity === 0'>PUT IN CART <i class="material-icons">shopping_cart</i></button>
+        <button mat-raised-button color="accent" class="btnCart" (click)='addToCart(currentBag)' [disabled]='!(canBookProduct$ | async)'>PUT IN CART <i class="material-icons">shopping_cart</i></button>
     </div>
-
 </div>

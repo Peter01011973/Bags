@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Options } from 'ng5-slider';
 import { FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
-import { BagsService } from '../shared/services/bags.service';
 import { IBagSearchParams } from '../shared/interfaces/bagSearch-interface';
 import { Store } from '@ngrx/store';
-import { AppState, getBagsArray } from '../redux/app.state';
-import { IBag } from '../shared/interfaces/bag-interface';
+import { AppState, getGetSearchingParams } from '../redux/app.state';
+import { ChangeSearchingParams } from '../redux/bags.actions';
+import { Observable, Subscription } from 'rxjs';
 
 
 @Component({
@@ -15,51 +15,54 @@ import { IBag } from '../shared/interfaces/bag-interface';
 })
 export class SearchFormComponent implements OnInit {
 
+  public searchObject$: Observable<IBagSearchParams>;
   public searchObject: IBagSearchParams;
+  public initParams: IBagSearchParams;
   public value: number;
   public highValue: number;
   public options: Options;   
   public searchForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private bagsService: BagsService, private store: Store<AppState>) {}
+  constructor(private fb: FormBuilder, private store: Store<AppState>) {}
 
-  public submit() {
+  public ngOnInit(): void {
+    const sub: Subscription = this.store.select<IBagSearchParams>(getGetSearchingParams)
+      .subscribe((params: IBagSearchParams) => {
+        this.options = { floor: params.price.min, ceil: params.price.max };
+        this.initParams = params;
+      });
+    sub.unsubscribe();
+
+    this.searchObject$ = this.store.select<IBagSearchParams>(getGetSearchingParams);
+    this.searchObject$
+      .subscribe((params: IBagSearchParams) => {
+        this.searchObject = params;
+        this.value = params.price.min;
+        this.highValue = params.price.max;
+        const formSearch = this.searchObject.brands.map((cur,index) => new FormControl(this.searchObject.brands[index].isChoosed));
+        this.searchForm = this.fb.group({
+          listOfBrands: new FormArray(formSearch)
+        });
+      });
+  }
+
+  public submit(): void {
     this.searchObject = {
       price: {
         min: this.value,
         max: this.highValue
       },
       brands: this.searchObject.brands
-        .map((curr, index) => { return { 
+        .map((curr, index) => ({ 
           brand: curr.brand, 
           isChoosed: this.searchForm.value.listOfBrands[index] 
-        }}
+        })
       )
     };
-    this.bagsService.changeSearchingParams$$.next(this.searchObject);
-
-    // this.bagsService.searchingInBags(this.searchObject);
+    this.store.dispatch(ChangeSearchingParams(this.searchObject));
   }
 
-  public ngOnInit() {
-        this.initSearch();
-    }
-   
-    public initSearch() {
-      this.value = this.bagsService.searchingParams.price.min;
-      this.highValue= this.bagsService.searchingParams.price.max;
-      this.options= {floor: this.bagsService.searchingParams.price.min, ceil: this.bagsService.searchingParams.price.max};
-      this.searchObject = this.bagsService.searchingParams;
-
-      const formSearch = this.searchObject.brands.map(control => new FormControl(true));  
-      this.searchForm = this.fb.group({
-        listOfBrands: new FormArray(formSearch)
-      });      
-    }
-
-    public resetSearchingParams() {
-      this.bagsService.setSearchingParams(); 
-      this.initSearch();
-    }
+  public resetSearchingParams(): void {
+    this.store.dispatch(ChangeSearchingParams(this.initParams));
   }
-  
+}

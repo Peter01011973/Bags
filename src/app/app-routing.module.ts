@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListOfProductsComponent } from './list-of-products/list-of-products.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
-import { CardComponent } from './card/card.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { CardComponent } from './list-of-products/product-details/card.component';
 
 
 const routes: Routes = [
